@@ -1,13 +1,11 @@
 import pandas as pd
 from twilio.rest import Client
 
-# que temos que baixar com pip install
-
-# pandas - integração do python com excel
-# openpyxl - mesmo de cima
-# twilio - integração do python com sms
-
-# passo a passo de solução
+# Your Account SID from twilio.com/console
+account_sid = "AC1d0e2adf8e93769c111612a4b97509bc"
+# Your Auth Token from twilio.com/console
+auth_token = "3c9d86be4fbe68d7972443926f7d0253"
+client = Client(account_sid, auth_token)
 
 # abrir os seis arquivos em Excel
 
@@ -21,23 +19,12 @@ for mes in lista_meses:
         vendedor = tabela_vendas.loc[tabela_vendas['Vendas'] > 55000, 'Vendedor'].values[0]
         vendas = tabela_vendas.loc[tabela_vendas['Vendas'] > 55000, 'Vendas'].values[0]
         print(f'No mês de {mes} alguém bateu a meta. Vendedor: {vendedor}, Vendas: {vendas}')
+        message = client.messages.create(
+            to="+5587981812358",
+            from_="+19803684171",
+            body=f'No mês de {mes} alguém bateu a meta. Vendedor: {vendedor}, Vendas: {vendas}')
+        print(message.sid)
 
-
-
-
-# Your Account SID from twilio.com/console
-account_sid = "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-# Your Auth Token from twilio.com/console
-auth_token  = "your_auth_token"
-
-client = Client(account_sid, auth_token)
-
-message = client.messages.create(
-    to="+15558675309", 
-    from_="+15017250604",
-    body="Hello from Python!")
-
-print(message.sid)
 # Para cada arquivo:
 
 # verificar se algum valor na coluna vendas daquele arquivo é maior que 55.000
